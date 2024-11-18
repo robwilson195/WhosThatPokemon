@@ -24,7 +24,7 @@ class WhosThatViewModel: ObservableObject {
     let maxRounds = 5
     
     private let pokemonService: PokemonServicing
-    private var cachedEntries: [PokedexEntry] = []
+    private var cachedPokemonNames: [String] = []
     
     init(pokemonService: PokemonServicing) {
         self.pokemonService = pokemonService
@@ -32,7 +32,8 @@ class WhosThatViewModel: ObservableObject {
     
     func onAppear() async {
         do {
-            cachedEntries = try await pokemonService.getPokedexEntries()
+            cachedPokemonNames = try await pokemonService.getPokemonNames()
+            round = 0
             await startRandomRound()
         } catch {
             print(error)
@@ -61,28 +62,16 @@ class WhosThatViewModel: ObservableObject {
     }
     
     private func startRandomRound() async {
-        let randomEntries = cachedEntries.randomEntries(desiredLength: 4)
-        guard let first = randomEntries.first else { return }
+        let randomNames = Array(cachedPokemonNames.shuffled().prefix(4))
+        guard let first = randomNames.first else { return }
         do {
-            let pokemon = try await pokemonService.getPokemon(name: first.name)
+            let pokemon = try await pokemonService.getPokemon(name: first)
             round += 1
-            options = randomEntries.shuffled().map(\.name)
+            options = randomNames.shuffled()
             gameState = .choosing(pokemon)
         } catch {
             print(error)
         }
     }
     
-}
-
-extension Array where Element == PokedexEntry {
-    func randomEntries(desiredLength: Int) -> [PokedexEntry] {
-        guard count >= desiredLength else { return self }
-        var randomEntries = [PokedexEntry]()
-        while randomEntries.count < desiredLength {
-            guard let random = self.randomElement() else { return self }
-            if !randomEntries.contains(random) { randomEntries.append(random) }
-        }
-        return randomEntries
-    }
 }

@@ -52,15 +52,17 @@ struct WhosThatView: View {
             case .wonGame:
                 Text(promptText())
                     .pokemonTextStyle(size: 30)
-                    .padding(.bottom, 30)
+                    .padding(30)
             }
         }
-        .onChange(of: viewModel.gameState) {
-            switch $0 {
-            case .choosing:
-                renderingMode = .template
-            default:
-                renderingMode = .original
+        .onChange(of: viewModel.gameState) { state in
+            withAnimation {
+                switch state {
+                case .choosing:
+                    renderingMode = .template
+                default:
+                    renderingMode = .original
+                }
             }
         }
         .animation(.easeInOut, value: viewModel.gameState)
@@ -80,7 +82,6 @@ struct WhosThatView: View {
                 .resizable()
                 .renderingMode(renderingMode)
                 .foregroundStyle(.black)
-        
         } placeholder: {
             ProgressView()
         }
@@ -105,13 +106,8 @@ struct WhosThatView: View {
 
 #Preview {
     class PreviewPokemonService: PokemonServicing {
-        func getPokedexEntries() async throws -> [PokedexEntry] {
-            [
-                .init(name: "bulbasaur", url: URL(string: "www.google.com")!),
-                .init(name: "charmander", url: URL(string: "www.google.com")!),
-                .init(name: "dog", url: URL(string: "www.google.com")!),
-                .init(name: "potato", url: URL(string: "www.google.com")!)
-            ]
+        func getPokemonNames() async throws -> [String] {
+            ["bulbasaur", "charmander", "dog", "potato"]
         }
         
         func getPokemon(name: String) async throws -> Pokemon {

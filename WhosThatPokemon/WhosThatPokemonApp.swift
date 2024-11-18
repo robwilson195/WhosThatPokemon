@@ -11,7 +11,7 @@ import SwiftUI
 struct WhosThatPokemonApp: App {
     var body: some Scene {
         WindowGroup {
-            WhosThatView(viewModel: WhosThatViewModel(pokemonService: PokemonService()))
+            LandingView()
         }
     }
 }

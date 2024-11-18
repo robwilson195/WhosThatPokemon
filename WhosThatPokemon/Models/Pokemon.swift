@@ -7,13 +7,11 @@
 
 import Foundation
 
-struct PokedexEntry: Decodable, Equatable {
+struct PokedexEntry: Decodable {
     let name: String
-    let url: URL
     
-    init(name: String, url: URL) {
+    init(name: String) {
         self.name = name
-        self.url = url
     }
 }
 

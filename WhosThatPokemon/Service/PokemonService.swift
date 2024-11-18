@@ -8,18 +8,18 @@
 import Foundation
 
 protocol PokemonServicing {
-    func getPokedexEntries() async throws -> [PokedexEntry]
+    func getPokemonNames() async throws -> [String]
     func getPokemon(name: String) async throws -> Pokemon
 }
 
 class PokemonService: PokemonServicing {
     let pokemonURL: URL = URL(string: "https://pokeapi.co/api/v2/pokemon")!
     
-    func getPokedexEntries() async throws -> [PokedexEntry] {
+    func getPokemonNames() async throws -> [String] {
         let allPokemonURL = pokemonURL.appending(queryItems: [.init(name: "limit", value: "150")])
         let (data, _) = try await URLSession.shared.data(from: allPokemonURL)
         let pokedex = try JSONDecoder().decode(Pokedex.self, from: data)
-        return pokedex.results
+        return pokedex.results.map(\.name)
     }
     
     func getPokemon(name: String) async throws -> Pokemon {
