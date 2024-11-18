@@ -17,24 +17,15 @@ class PokemonService: PokemonServicing {
     
     func getPokedexEntries() async throws -> [PokedexEntry] {
         let allPokemonURL = pokemonURL.appending(queryItems: [.init(name: "limit", value: "150")])
-        let (data, response) = try await URLSession.shared.data(from: allPokemonURL)
-        do {
-            let pokedex = try JSONDecoder().decode(Pokedex.self, from: data)
-            return pokedex.results
-        } catch {
-            throw error
-        }
+        let (data, _) = try await URLSession.shared.data(from: allPokemonURL)
+        let pokedex = try JSONDecoder().decode(Pokedex.self, from: data)
+        return pokedex.results
     }
     
     func getPokemon(name: String) async throws -> Pokemon {
         let pokemonURL = pokemonURL.appending(path: "/\(name)")
-        let (data, response) = try await URLSession.shared.data(from: pokemonURL)
-        do {
-            let pokemon = try JSONDecoder().decode(Pokemon.self, from: data)
-            return pokemon
-        } catch {
-            throw error
-        }
+        let (data, _) = try await URLSession.shared.data(from: pokemonURL)
+        return try JSONDecoder().decode(Pokemon.self, from: data)
     }
     
 }

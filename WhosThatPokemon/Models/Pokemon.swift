@@ -7,16 +7,21 @@
 
 import Foundation
 
-struct PokedexEntry: Decodable {
+struct PokedexEntry: Decodable, Equatable {
     let name: String
     let url: URL
+    
+    init(name: String, url: URL) {
+        self.name = name
+        self.url = url
+    }
 }
 
 struct Pokedex: Decodable {
     let results: [PokedexEntry]
 }
 
-struct Pokemon: Decodable {
+struct Pokemon: Decodable, Equatable {
     let id: Int
     let name: String
     let imageURL: URL
