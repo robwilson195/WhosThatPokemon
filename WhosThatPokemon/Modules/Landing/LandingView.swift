@@ -25,7 +25,7 @@ struct LandingView: View {
                         .pokemonTextStyle(size: 34)
                     Spacer()
                     VStack {
-                        Text("Correctly identify 5 pokemon to win!")
+                        Text("Correctly identify 5 pokémon to win!")
                             .font(.title)
                             .multilineTextAlignment(.center)
                         NavigationLink(destination: {

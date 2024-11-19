@@ -35,7 +35,7 @@ struct WhosThatView: View {
                         .modifier(PrimaryCTAStyle())
                     }
                 } else if case .wonRound = viewModel.gameState {
-                    Button("Next round") {
+                    Button(viewModel.round >= viewModel.maxRounds ? "Next" : "Next round") {
                         Task {
                             await viewModel.nextPressed()
                         }
@@ -86,6 +86,7 @@ struct WhosThatView: View {
             ProgressView()
         }
         .frame(width: 300, height: 300)
+        .scaleEffect(renderingMode == .original ? 1.2 : 1)
     }
     
     func promptText() -> String {

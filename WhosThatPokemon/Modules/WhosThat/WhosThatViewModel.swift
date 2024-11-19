@@ -43,9 +43,7 @@ class WhosThatViewModel: ObservableObject {
     func choseOption(_ chosenName: String) {
         guard case .choosing(let pokemon) = gameState else { return }
         let won = pokemon.name.lowercased() == chosenName.lowercased()
-        if won, round >= maxRounds {
-            gameState = .wonGame
-        } else if won {
+        if won {
             gameState = .wonRound(pokemon)
         } else {
             gameState = .lostRound(pokemon)
@@ -53,12 +51,16 @@ class WhosThatViewModel: ObservableObject {
     }
     
     func nextPressed() async {
-        await startRandomRound()
+        if round >= maxRounds {
+            gameState = .wonGame
+        } else {
+            await startRandomRound()
+        }
     }
     
     func retryPressed() async {
-        round = 0
-        await startRandomRound()
+        gameState = .loading
+        await onAppear()
     }
     
     private func startRandomRound() async {
