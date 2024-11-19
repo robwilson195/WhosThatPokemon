@@ -67,6 +67,7 @@ class WhosThatViewModel: ObservableObject {
         await onAppear()
     }
     
+    @MainActor
     private func startRandomRound() async {
         let randomNames = Array(cachedPokemonNames.shuffled().prefix(4))
         guard let first = randomNames.first else { return }
