@@ -126,7 +126,7 @@ final class WhosThatViewModelTests: XCTestCase {
         XCTAssertEqual(sut.gameState, .lostRound(defaultPokemon))
     }
     
-    func test_givenRoundLost_whenReryPressed_thenRoundResetAndChooseStateShown() async {
+    func test_givenRoundLost_whenRetryPressed_thenRoundResetAndChooseStateShown() async {
         // Given
         await sut.onAppear()
         await sut.choseOption("charmander")
