@@ -8,6 +8,7 @@
 import Foundation
 
 enum GameState: Equatable {
+    case error
     case loading
     case choosing(Pokemon)
     case lostRound(Pokemon)
@@ -15,7 +16,6 @@ enum GameState: Equatable {
     case wonGame
 }
 
-@MainActor
 class WhosThatViewModel: ObservableObject {
     
     @Published var gameState: GameState = .loading
@@ -30,16 +30,18 @@ class WhosThatViewModel: ObservableObject {
         self.pokemonService = pokemonService
     }
     
+    @MainActor
     func onAppear() async {
         do {
             cachedPokemonNames = try await pokemonService.getPokemonNames()
             round = 0
             await startRandomRound()
         } catch {
-            print(error)
+            gameState = .error
         }
     }
     
+    @MainActor
     func choseOption(_ chosenName: String) {
         guard case .choosing(let pokemon) = gameState else { return }
         let won = pokemon.name.lowercased() == chosenName.lowercased()
@@ -50,6 +52,7 @@ class WhosThatViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func nextPressed() async {
         if round >= maxRounds {
             gameState = .wonGame
@@ -58,6 +61,7 @@ class WhosThatViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func retryPressed() async {
         gameState = .loading
         await onAppear()
@@ -72,7 +76,7 @@ class WhosThatViewModel: ObservableObject {
             options = randomNames.shuffled()
             gameState = .choosing(pokemon)
         } catch {
-            print(error)
+            gameState = .error
         }
     }
     

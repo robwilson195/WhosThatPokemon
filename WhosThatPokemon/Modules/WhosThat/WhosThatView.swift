@@ -19,6 +19,16 @@ struct WhosThatView: View {
             case .loading:
                 ProgressView()
                     .scaleEffect(3)
+            case .error:
+                VStack(spacing: 25) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.system(size: 100))
+                        .foregroundColor(.red)
+                    Text("Something went wrong")
+                        .font(.title)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(50)
             case .choosing(let pokemon),
                     .wonRound(let pokemon),
                     .lostRound(let pokemon):
@@ -101,6 +111,8 @@ struct WhosThatView: View {
             return "You're a pokémon master!"
         case .loading:
             return "Loading..."
+        case .error:
+            return "Error"
         }
     }
 }
