@@ -2,7 +2,7 @@
 //  LandingView.swift
 //  WhosThatPokemon
 //
-//  Created by Catherine Megregian on 18/11/2024.
+//  Created by Rob Wilson on 18/11/2024.
 //
 
 import SwiftUI

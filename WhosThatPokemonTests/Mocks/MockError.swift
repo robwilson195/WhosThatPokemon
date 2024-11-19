@@ -2,7 +2,7 @@
 //  MockError.swift
 //  WhosThatPokemonTests
 //
-//  Created by Catherine Megregian on 19/11/2024.
+//  Created by Rob Wilson on 19/11/2024.
 //
 
 import Foundation
